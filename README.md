@@ -14,10 +14,10 @@ Set up your MaiadDB 10 Installation and create a database named 'profiletasks'
 
 Add the connection details to application.settings
 
-To run the app use
+To run the app use - we select the dev profile to use the local settings in memory database
 
 ```bash
-./mvnw spring-boot:run
+./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
 ```
 
 ## Usage
