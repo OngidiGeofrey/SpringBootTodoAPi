@@ -4,7 +4,7 @@ This is an API  that manages user pofiles and assigned tasks
 
 ## Installation
  
-Download and Install JDK 17 [download] (https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html)
+Download and Install JDK 17 [download](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html)
 
 Add the JDK 17 folder to your environment as JAVA_HOME
 
@@ -27,9 +27,13 @@ Use the application as a REST API
 General paths:
 
 POST **/register** - Create a New Account
+
 POST **/login** - Authenticate User and Obtain JWT token fo Authorization
+
 POST **/user/create** - Add New User Account
+
 POST **/user/update** - Update User Account
+
 
 ## Contributing
 
