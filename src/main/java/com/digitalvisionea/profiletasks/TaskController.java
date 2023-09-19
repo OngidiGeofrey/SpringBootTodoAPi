@@ -103,7 +103,7 @@ public class TaskController {
 
     @PostMapping("/task/get-all")
     @ElementCollection
-    public List<Task> getAll(@RequestBody Map<String, String> body,@RequestHeader Map<String, String> headers){
+    public List<Task> getAll(@RequestHeader Map<String, String> headers){
         //read authentication token from headers
         String authorization = headers.get("authorization");
 
