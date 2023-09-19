@@ -153,6 +153,8 @@ public class TaskController {
 @PostMapping("/task/update")
 public Task updateTask(@RequestBody Map<String, String> body) {
     try {
+        int status = Integer.parseInt(body.get("status"));
+        int priority = Integer.parseInt(body.get("priority"));
         int taskId = Integer.parseInt(body.get("id"));
         // getting task
         Task task = taskRepository.findById(taskId).orElse(null);
