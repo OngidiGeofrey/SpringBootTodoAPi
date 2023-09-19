@@ -172,10 +172,17 @@ public Task updateTask(@RequestBody Map<String, String> body) {
 }
 
     @PostMapping("task/delete")
-    public boolean deleteTask(@RequestBody Map<String, String> body){
+    public Task deleteTask(@RequestBody Map<String, String> body){
         int taskId = Integer.parseInt(body.get("id"));
-        taskRepository.deleteById(taskId);
-        return true;
+
+        Task task = taskRepository.findById(taskId).orElse(null);
+
+        if (task == null) {
+            throw new CustomException(404, "Task not found");
+        } else {
+            taskRepository.deleteById(taskId);
+            return task;
+        }
     }
 
 }
