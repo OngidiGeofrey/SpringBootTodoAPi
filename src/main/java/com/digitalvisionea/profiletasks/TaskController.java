@@ -102,7 +102,13 @@ public class TaskController {
 
     @PostMapping("/task/get-all")
     @ElementCollection
-    public List<Task> getAll(){
+    public List<Task> getAll(@RequestBody Map<String, String> body,@RequestHeader Map<String, String> headers){
+        //read authentication token from headers
+        String authorization = headers.get("authorization");
+
+        //load middleware
+        middleWare(authorization);
+
         return taskRepository.findAll();
     }
 
@@ -143,16 +149,6 @@ public class TaskController {
         int modifiedBy = this.loggedInUser.getId();
         return taskRepository.save(new Task(title, content,status,priority,userId,modifiedOn,modifiedBy));
     }
-
-//    @PostMapping("/task/update")
-//    public Task updateTask(@RequestBody Map<String, String> body){
-//        int taskId = Integer.parseInt(body.get("id"));
-//        // getting task
-//        Task task = taskRepository.findById(taskId).get();
-//        task.setTitle(body.get("title"));
-//        task.setContent(body.get("content"));
-//        return taskRepository.save(task);
-//    }
 @PostMapping("/task/update")
 public Task updateTask(@RequestBody Map<String, String> body) {
     try {
