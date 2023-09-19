@@ -107,6 +107,19 @@ public class TaskController {
     }
 
 
+    @GetMapping("/task/user/{userId}")
+    @ElementCollection
+    public List<Task> getTasksByUserId(@PathVariable String userId) {
+        try {
+            int userIdInt = Integer.parseInt(userId);
+            // Find tasks by user ID
+            return taskRepository.findByUserId(userIdInt);
+        } catch (NumberFormatException e) {
+            throw new CustomException(400, "Invalid user ID format");
+        } catch (Exception e) {
+            throw new CustomException(500, "Internal Server error");
+        }
+    }
 
 
     @PostMapping("/task/create")
@@ -131,15 +144,35 @@ public class TaskController {
         return taskRepository.save(new Task(title, content,status,priority,userId,modifiedOn,modifiedBy));
     }
 
-    @PostMapping("/task/update")
-    public Task updateTask(@RequestBody Map<String, String> body){
+//    @PostMapping("/task/update")
+//    public Task updateTask(@RequestBody Map<String, String> body){
+//        int taskId = Integer.parseInt(body.get("id"));
+//        // getting task
+//        Task task = taskRepository.findById(taskId).get();
+//        task.setTitle(body.get("title"));
+//        task.setContent(body.get("content"));
+//        return taskRepository.save(task);
+//    }
+@PostMapping("/task/update")
+public Task updateTask(@RequestBody Map<String, String> body) {
+    try {
         int taskId = Integer.parseInt(body.get("id"));
         // getting task
-        Task task = taskRepository.findById(taskId).get();
+        Task task = taskRepository.findById(taskId).orElse(null);
+
+        if (task == null) {
+            throw new CustomException(404, "Task not found");
+        }
+
         task.setTitle(body.get("title"));
         task.setContent(body.get("content"));
         return taskRepository.save(task);
+    } catch (NumberFormatException e) {
+        throw new CustomException(400, "Invalid task ID format");
+    } catch (Exception e) {
+        throw new CustomException(500, "Internal Server error");
     }
+}
 
     @PostMapping("task/delete")
     public boolean deleteTask(@RequestBody Map<String, String> body){
