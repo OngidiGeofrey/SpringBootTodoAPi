@@ -150,26 +150,66 @@ public class TaskController {
         int modifiedBy = this.loggedInUser.getId();
         return taskRepository.save(new Task(title, content,status,priority,userId,modifiedOn,modifiedBy));
     }
-@PostMapping("/task/update")
-public Task updateTask(@RequestBody Map<String, String> body) {
-    try {
-        int taskId = Integer.parseInt(body.get("id"));
-        // getting task
-        Task task = taskRepository.findById(taskId).orElse(null);
+    @PostMapping("/task/update")
+    public Task updateTask(@RequestBody Map<String, String> body) {
+        try {
+            int taskId = Integer.parseInt(body.get("id"));
+            // getting task
+            Task task = taskRepository.findById(taskId).orElse(null);
 
-        if (task == null) {
-            throw new CustomException(404, "Task not found");
+            if (task == null) {
+                throw new CustomException(404, "Task not found");
+            }
+
+            // Check if specific fields are provided in the request body and update them
+            if (body.containsKey("title")) {
+                task.setTitle(body.get("title"));
+            }
+
+            if (body.containsKey("content")) {
+                task.setContent(body.get("content"));
+            }
+
+            if (body.containsKey("status")) {
+                int status = Integer.parseInt(body.get("status"));
+                task.setStatus(status);
+            }
+
+            if (body.containsKey("priority")) {
+                int priority = Integer.parseInt(body.get("priority"));
+                task.setPriority(priority);
+            }
+
+            return taskRepository.save(task);
+        } catch (NumberFormatException e) {
+            throw new CustomException(400, "Invalid task ID format");
+        } catch (Exception e) {
+            throw new CustomException(500, "Internal Server error");
         }
-
-        task.setTitle(body.get("title"));
-        task.setContent(body.get("content"));
-        return taskRepository.save(task);
-    } catch (NumberFormatException e) {
-        throw new CustomException(400, "Invalid task ID format");
-    } catch (Exception e) {
-        throw new CustomException(500, "Internal Server error");
     }
-}
+
+//@PostMapping("/task/update")
+//public Task updateTask(@RequestBody Map<String, String> body) {
+//    try {
+//        int status = Integer.parseInt(body.get("status"));
+//        int priority = Integer.parseInt(body.get("priority"));
+//        int taskId = Integer.parseInt(body.get("id"));
+//        // getting task
+//        Task task = taskRepository.findById(taskId).orElse(null);
+//
+//        if (task == null) {
+//            throw new CustomException(404, "Task not found");
+//        }
+//
+//        task.setTitle(body.get("title"));
+//        task.setContent(body.get("content"));
+//        return taskRepository.save(task);
+//    } catch (NumberFormatException e) {
+//        throw new CustomException(400, "Invalid task ID format");
+//    } catch (Exception e) {
+//        throw new CustomException(500, "Internal Server error");
+//    }
+//}
 
     @PostMapping("task/delete")
     public Task deleteTask(@RequestBody Map<String, String> body){

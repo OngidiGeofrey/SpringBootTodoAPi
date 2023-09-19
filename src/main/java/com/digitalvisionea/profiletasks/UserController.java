@@ -234,15 +234,9 @@ public class UserController {
         //load middleware
         middleWare(authorization);
 
-
-
         int UserId = Integer.parseInt(body.get("id"));
         // getting User
         User User = UserRespository.findById(UserId).get();
-
-
-        
-
         if(body.get("firstName")!="" && body.get("firstName")!=null){
             User.setFirstName(body.get("firstName"));
         }
