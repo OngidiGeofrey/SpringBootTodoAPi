@@ -122,7 +122,7 @@ public class TaskController {
             // Find tasks by user ID
             return taskRepository.findByUserId(userIdInt);
         } catch (NumberFormatException e) {
-            throw new CustomException(400, "Invalid user ID format");
+            throw new NumberFormatException("Invalid user ID format");
         } catch (Exception e) {
             throw new CustomException(500, "Internal Server error");
         }
